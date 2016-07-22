@@ -1,0 +1,58 @@
+#include<iostream>
+#include "Binary_Search_Tree.h"
+#include "Binary_Tree.h"
+#include <iterator>
+#include <list>
+#include <vector>
+#include <string>
+//#include <streamstring>
+using namespace std;
+
+string DECODE(Binary_Tree<string>& tree, BTNode<string>* root, const BTNode<string>* start, string& to_decode, string& result, const int& i) {
+
+	char morse = to_decode[i];
+	if (morse == ' ' || i == to_decode.size()-1) {
+		result += root->data;
+		root = tree.getRoot();
+		}
+
+	if (i == to_decode.size()-1) {
+		return result;
+		}
+
+	if (morse == '*') {
+			root = root->left;
+		}
+
+	if (morse == '-') {
+			root = root->right;
+		}
+	return DECODE(tree, root, start, to_decode, result, i+1);
+
+}
+
+string DECODE_Wrapper(Binary_Tree<string>& tree, string& to_decode) {
+	BTNode<string>* root = tree.getRoot();
+	const BTNode<string>* start = root;
+	const int i = 0;
+	string result;
+
+	return DECODE(tree, root, start, to_decode, result, i);
+}
+
+int main() {
+	
+
+	string word = "**** * *-** *-** ---";
+	vector<string> expression{"Empty", "e", "i", "s", "h", "NULL" , "NULL" , "v", "NULL" , "NULL" , "u", "f", "NULL" , "NULL" , "NULL" , "a" , "r", "l", "NULL", "NULL" , "NULL" ,"w", "p", "NULL", "NULL", "j", "NULL", "NULL", "t", "n", "d", "b", "NULL" , "NULL" , "x", "NULL" , "NULL" , "k", "c", "NULL" , "NULL" , "q", "NULL" , "NULL" , "o" , "NULL" , "NULL" };
+	Binary_Tree<string> the_tree;
+	the_tree.read_tree(expression);
+	
+	string decode = DECODE_Wrapper(the_tree, word);
+
+	cout << decode;
+
+
+	system("PAUSE");
+
+}
